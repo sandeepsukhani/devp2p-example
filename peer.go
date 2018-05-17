@@ -69,7 +69,10 @@ func subscribeToEvents(srv *p2p.Server, communicated chan<- bool) {
 			}
 		case <-eventSub.Err():
 			log.Println("subscription closed")
-			return
+
+			// Closing the channel so that server gets stopped since
+			// there won't be any more events coming in
+			close(communicated)
 		}
 	}
 }
